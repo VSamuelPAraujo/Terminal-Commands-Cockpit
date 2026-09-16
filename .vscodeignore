@@ -4,10 +4,10 @@ node_modules/**
 esbuild.js
 tsconfig.json
 bun.lock
-*.vsix
 .gitignore
 dist/**/*.map
 media/icon.svg
 examples/**
-*.vsix
 test/**
+TODO.md
+*.vsix
