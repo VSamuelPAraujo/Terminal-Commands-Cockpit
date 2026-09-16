@@ -17,8 +17,8 @@ Everything outstanding before the first public release. Ticked items are done.
 - [ ] **Personal Microsoft account** → create a **free personal** Azure DevOps organization.
       Use a personal identity, kept entirely separate from any employer account or
       work credentials.
-- [ ] **Register the publisher** at <https://marketplace.visualstudio.com/manage>
-      with the ID `vsamuelparaujo` — lowercase, and it must match `package.json` exactly.
+- [x] **Register the publisher** at <https://marketplace.visualstudio.com/manage> —
+      done, ID `SamuelAraujo`, matching `package.json` exactly.
 - [ ] **Publish to the VS Code Marketplace**: `az login` then `bun run publish:vsce`.
       Uses `vsce publish --azure-credential` (Entra ID).
       Ignore every PAT-based tutorial: Azure DevOps blocked creation of new global PATs
