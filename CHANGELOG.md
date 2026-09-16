@@ -24,6 +24,8 @@
   `require()` that cannot resolve once bundled. The build now prefers ESM entries.
 - Editing an argument, running a command, or clearing/resetting a value never updated the
   visible row - it kept showing the old value (or "not set") until something forced a full
-  tree rebuild. Tree nodes carried no stable id, so a freshly-constructed node passed to the
-  refresh event could not be correlated with the row already on screen. Every node now gets a
-  stable id, which also keeps expand/collapse state and scroll position across refreshes.
+  tree rebuild. Every node now gets a stable id, and the sidebar redraws from the root after
+  any value changes, instead of asking VS Code to refresh one specific row by passing it a
+  freshly-built node object it has no way to recognise. The stable ids mean this full redraw
+  still keeps expand/collapse state and scroll position, so nothing is lost by not targeting
+  a single row.

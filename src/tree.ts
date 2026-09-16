@@ -86,9 +86,20 @@ export class CockpitTreeProvider implements vscode.TreeDataProvider<CockpitNode>
     this.emitter.fire(undefined);
   }
 
-  /** Redraw a single command subtree after one of its values changed. */
-  refreshCommand(node: CommandNode): void {
-    this.emitter.fire(node);
+  /**
+   * Redraws every visible row using the config already in memory - no disk
+   * read, unlike refresh(). Used after an argument value changes.
+   *
+   * Fires on the root rather than a specific node: targeting a node requires
+   * VS Code to correlate it with the row already on screen, which depends on
+   * TreeItem.id resolution working exactly as expected. A root refresh has
+   * no such dependency - VS Code always re-fetches from the top - and still
+   * preserves expand/collapse state and scroll position because every node
+   * carries a stable id (see nodeId()), just for every visible row instead
+   * of a targeted subtree.
+   */
+  redraw(): void {
+    this.emitter.fire(undefined);
   }
 
   find(folderName: string, commandId: string): CommandNode | undefined {

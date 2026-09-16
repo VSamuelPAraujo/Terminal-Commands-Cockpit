@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext): void {
     if (shouldRemember(node.arg.remember)) {
       await store.set(key, node.command.id, node.arg.id, result);
     }
-    provider.refreshCommand({ type: "command", folder: node.folder, command: node.command });
+    provider.redraw();
     return true;
   };
 
@@ -81,7 +81,7 @@ export function activate(context: vscode.ExtensionContext): void {
         }
       }
 
-      provider.refreshCommand(node);
+      provider.redraw();
       try {
         await run(node.command, values, node.folder);
       } catch (error) {
@@ -101,7 +101,7 @@ export function activate(context: vscode.ExtensionContext): void {
         return;
       }
       await store.set(folderKey(node.folder), node.command.id, node.arg.id, undefined);
-      provider.refreshCommand({ type: "command", folder: node.folder, command: node.command });
+      provider.redraw();
     }),
 
     vscode.commands.registerCommand("cockpit.resetArgs", async (node?: CommandNode) => {
@@ -109,7 +109,7 @@ export function activate(context: vscode.ExtensionContext): void {
         return;
       }
       await store.reset(folderKey(node.folder), node.command.id);
-      provider.refreshCommand(node);
+      provider.redraw();
     }),
 
     vscode.commands.registerCommand("cockpit.copyCommandLine", async (node?: CommandNode) => {
