@@ -10,4 +10,5 @@ media/icon.svg
 examples/**
 test/**
 TODO.md
+RELEASING.md
 *.vsix
