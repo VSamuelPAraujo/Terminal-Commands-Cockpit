@@ -1,0 +1,134 @@
+{
+  // A monorepo release workflow: the kind of command nobody types correctly
+  // from memory. Copy to .vscode/cockpit.jsonc to try it.
+  "version": 1,
+  "commands": [
+    {
+      "id": "promote",
+      "label": "Promote branch",
+      "description": "staging → production",
+      "group": "Release",
+      "icon": "rocket",
+      "command": "npm run promote --",
+      "confirm": true,
+      "args": [
+        {
+          "id": "source",
+          "kind": "shellPick",
+          "label": "Source branch",
+          "description": "Listed from your local branches.",
+          "flag": "--source",
+          "command": "git for-each-ref --format=%(refname:short) refs/heads",
+          "required": true
+        },
+        {
+          "id": "packages",
+          "kind": "multiPick",
+          "label": "Only packages",
+          "description": "Leave empty to promote everything.",
+          "flag": "--only",
+          "separator": ",",
+          "options": ["api", "web", "worker", "shared", "cli"]
+        },
+        {
+          "id": "ticket",
+          "kind": "input",
+          "label": "Ticket",
+          "placeholder": "e.g. PROJ-1234",
+          "flag": "--ticket"
+        },
+        {
+          "id": "dryRun",
+          "kind": "flag",
+          "label": "Dry run",
+          "flag": "--dry-run",
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "deploy",
+      "label": "Deploy",
+      "group": "Release",
+      "icon": "cloud-upload",
+      "command": "npm run deploy --",
+      "confirm": true,
+      "args": [
+        {
+          "id": "env",
+          "kind": "pick",
+          "label": "Environment",
+          "flag": "--env",
+          "default": "staging",
+          "options": [
+            { "label": "staging", "description": "Safe to redeploy freely" },
+            { "label": "production", "description": "Requires an approved release" }
+          ]
+        },
+        {
+          "id": "tag",
+          "kind": "shellPick",
+          "label": "Tag",
+          "flag": "--tag",
+          "command": "git tag --sort=-creatordate"
+        }
+      ]
+    },
+    {
+      "id": "branch",
+      "label": "Create branch",
+      "group": "Git",
+      "icon": "git-branch",
+      "command": "git checkout -b",
+      "args": [
+        {
+          "id": "name",
+          "kind": "input",
+          "label": "Branch name",
+          "placeholder": "feature/my-feature",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "logs",
+      "label": "Tail container logs",
+      "group": "Docker",
+      "icon": "output",
+      "command": "docker logs -f",
+      "args": [
+        {
+          "id": "container",
+          "kind": "shellPick",
+          "label": "Container",
+          "command": "docker ps --format {{.Names}}",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "test",
+      "label": "Run tests",
+      "group": "Dev",
+      "icon": "beaker",
+      "command": "npm test --",
+      "args": [
+        {
+          "id": "pattern",
+          "kind": "input",
+          "label": "Filter",
+          "placeholder": "only tests matching this",
+          "flag": "-t"
+        },
+        { "id": "watch", "kind": "flag", "label": "Watch", "flag": "--watch" }
+      ]
+    },
+    {
+      "id": "dev",
+      "label": "Start dev server",
+      "group": "Dev",
+      "icon": "play",
+      "command": "npm run dev"
+    }
+  ]
+}

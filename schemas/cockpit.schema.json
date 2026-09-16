@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Terminal Commands Cockpit configuration",
+  "type": "object",
+  "required": ["commands"],
+  "properties": {
+    "version": {
+      "type": "number",
+      "description": "Config format version. Currently 1.",
+      "default": 1
+    },
+    "commands": {
+      "type": "array",
+      "description": "Every entry becomes a row in the Cockpit sidebar.",
+      "items": { "$ref": "#/definitions/command" }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "command": {
+      "type": "object",
+      "required": ["label", "command"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable identifier, used to remember argument values. Defaults to the label."
+        },
+        "label": {
+          "type": "string",
+          "description": "Name shown in the sidebar."
+        },
+        "description": {
+          "type": "string",
+          "description": "Greyed-out text next to the label."
+        },
+        "command": {
+          "type": "string",
+          "description": "Base command line. Arguments are appended to it, correctly quoted for the active shell.",
+          "examples": ["npm run deploy --", "npm run build", "docker compose up"]
+        },
+        "cwd": {
+          "type": "string",
+          "description": "Working directory, relative to the workspace folder."
+        },
+        "group": {
+          "type": "string",
+          "description": "Optional heading. Commands sharing a group are nested under it."
+        },
+        "icon": {
+          "type": "string",
+          "description": "A VS Code codicon name, without the $() wrapper.",
+          "examples": ["rocket", "git-branch", "cloud-upload", "beaker", "flame"]
+        },
+        "env": {
+          "type": "object",
+          "description": "Extra environment variables for this command.",
+          "additionalProperties": { "type": "string" }
+        },
+        "confirm": {
+          "type": "boolean",
+          "description": "Always show the assembled command line for confirmation before running.",
+          "default": false
+        },
+        "args": {
+          "type": "array",
+          "description": "Arguments the user can set from the sidebar.",
+          "items": { "$ref": "#/definitions/arg" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "arg": {
+      "type": "object",
+      "required": ["id", "kind"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique within the command. Used as the storage key for the remembered value."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Which control the user gets.",
+          "enum": ["input", "pick", "shellPick", "flag", "multiPick"],
+          "enumDescriptions": [
+            "Free text box.",
+            "Dropdown with a fixed list of options.",
+            "Dropdown whose options come from the output of a shell command, one per line.",
+            "On/off switch that appends its flag when on.",
+            "Multi-select list; the chosen values are joined by `separator`."
+          ]
+        },
+        "label": {
+          "type": "string",
+          "description": "Name shown in the sidebar. Defaults to the id."
+        },
+        "description": {
+          "type": "string",
+          "description": "Help text shown in the prompt and tooltip."
+        },
+        "flag": {
+          "type": "string",
+          "description": "Emitted before the value, e.g. \"-TargetEnv\" or \"--target\". Omit for a positional argument. For `flag` kind, this is what gets appended when the switch is on.",
+          "examples": ["-TargetEnv", "--target", "--dry-run"]
+        },
+        "default": {
+          "description": "Value used until the user sets one.",
+          "type": ["string", "boolean", "array"],
+          "items": { "type": "string" }
+        },
+        "required": {
+          "type": "boolean",
+          "description": "If true, Cockpit prompts for this argument when you run the command and it is still empty.",
+          "default": false
+        },
+        "remember": {
+          "type": "boolean",
+          "description": "Remember the last used value. Defaults to the cockpit.rememberArguments setting."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Hint text inside an empty input box."
+        },
+        "options": {
+          "type": "array",
+          "description": "Choices for `pick` and `multiPick`. Use a plain string when the label and the value are the same.",
+          "items": {
+            "anyOf": [
+              { "type": "string" },
+              {
+                "type": "object",
+                "required": ["label"],
+                "properties": {
+                  "label": { "type": "string", "description": "Shown to the user." },
+                  "value": {
+                    "type": "string",
+                    "description": "Passed on the command line. Defaults to the label."
+                  },
+                  "description": { "type": "string", "description": "Secondary text." }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "command": {
+          "type": "string",
+          "description": "For `shellPick`: the command to run. Each non-empty line of stdout becomes one option.",
+          "examples": [
+            "git branch --format=%(refname:short)",
+            "git tag --sort=-creatordate",
+            "docker ps --format {{.Names}}"
+          ]
+        },
+        "cwd": {
+          "type": "string",
+          "description": "For `shellPick`: where to run `command`, relative to the workspace folder."
+        },
+        "separator": {
+          "type": "string",
+          "description": "For `multiPick`: what to join the selected values with.",
+          "default": ","
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "name": "terminal-commands-cockpit",
+  "displayName": "Terminal Commands Cockpit",
+  "description": "Run your project's commands from the sidebar with real arguments: text inputs, dropdowns, dropdowns populated by a shell command, checkboxes and multi-select.",
+  "version": "0.0.1",
+  "publisher": "vsamuelparaujo",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VSamuelPAraujo/Terminal-Commands-Cockpit.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "tasks",
+    "runner",
+    "commands",
+    "scripts",
+    "terminal",
+    "arguments",
+    "monorepo"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cockpit",
+          "title": "Commands Cockpit",
+          "icon": "media/cockpit.svg"
+        }
+      ]
+    },
+    "views": {
+      "cockpit": [
+        {
+          "id": "cockpit.commands",
+          "name": "Commands",
+          "icon": "media/cockpit.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "cockpit.commands",
+        "contents": "No commands configured yet.\n\nPaste a command line you already run and Cockpit turns its flags into editable inputs and dropdowns.\n\n[Add command](command:cockpit.addCommand)\n\nOr start from a config file you edit by hand.\n\n[Create config file](command:cockpit.createConfig)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "cockpit.addCommand",
+        "title": "Add Command...",
+        "category": "Cockpit",
+        "icon": "$(add)"
+      },
+      {
+        "command": "cockpit.run",
+        "title": "Run Command",
+        "category": "Cockpit",
+        "icon": "$(play)"
+      },
+      {
+        "command": "cockpit.editArg",
+        "title": "Edit Argument",
+        "category": "Cockpit",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "cockpit.clearArg",
+        "title": "Clear Argument",
+        "category": "Cockpit",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "cockpit.resetArgs",
+        "title": "Reset All Arguments",
+        "category": "Cockpit",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "cockpit.copyCommandLine",
+        "title": "Copy Command Line",
+        "category": "Cockpit",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "cockpit.refresh",
+        "title": "Refresh",
+        "category": "Cockpit",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "cockpit.openConfig",
+        "title": "Open Config File",
+        "category": "Cockpit",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "cockpit.createConfig",
+        "title": "Create Config File",
+        "category": "Cockpit"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "cockpit.addCommand",
+          "when": "view == cockpit.commands",
+          "group": "navigation@0"
+        },
+        {
+          "command": "cockpit.refresh",
+          "when": "view == cockpit.commands",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cockpit.openConfig",
+          "when": "view == cockpit.commands",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cockpit.run",
+          "when": "view == cockpit.commands && viewItem =~ /^cockpitCommand/",
+          "group": "inline@1"
+        },
+        {
+          "command": "cockpit.copyCommandLine",
+          "when": "view == cockpit.commands && viewItem =~ /^cockpitCommand/",
+          "group": "1_run@1"
+        },
+        {
+          "command": "cockpit.resetArgs",
+          "when": "view == cockpit.commands && viewItem == cockpitCommandWithArgs",
+          "group": "1_run@2"
+        },
+        {
+          "command": "cockpit.editArg",
+          "when": "view == cockpit.commands && viewItem == cockpitArg",
+          "group": "inline@1"
+        },
+        {
+          "command": "cockpit.clearArg",
+          "when": "view == cockpit.commands && viewItem == cockpitArg",
+          "group": "1_edit@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "cockpit.editArg",
+          "when": "false"
+        },
+        {
+          "command": "cockpit.clearArg",
+          "when": "false"
+        },
+        {
+          "command": "cockpit.resetArgs",
+          "when": "false"
+        },
+        {
+          "command": "cockpit.copyCommandLine",
+          "when": "false"
+        }
+      ]
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": ".vscode/cockpit.json",
+        "url": "./schemas/cockpit.schema.json"
+      },
+      {
+        "fileMatch": ".vscode/cockpit.jsonc",
+        "url": "./schemas/cockpit.schema.json"
+      }
+    ],
+    "configuration": {
+      "title": "Terminal Commands Cockpit",
+      "properties": {
+        "cockpit.configFile": {
+          "type": "string",
+          "default": ".vscode/cockpit.jsonc",
+          "description": "Path to the Cockpit config file, relative to each workspace folder."
+        },
+        "cockpit.rememberArguments": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remember the last value used for each argument, per workspace."
+        },
+        "cockpit.confirmBeforeRun": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show the assembled command line for confirmation before running it."
+        },
+        "cockpit.shellPickTimeoutMs": {
+          "type": "number",
+          "default": 10000,
+          "description": "How long to wait for a shell command that populates a dropdown before giving up."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "bun run check && bun run build -- --minify",
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "check": "tsc --noEmit",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish --azure-credential",
+    "publish:ovsx": "ovsx publish"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.25.0",
+    "ovsx": "^0.10.1",
+    "typescript": "^5.9.3"
+  },
+  "bugs": {
+    "url": "https://github.com/VSamuelPAraujo/Terminal-Commands-Cockpit/issues"
+  },
+  "homepage": "https://github.com/VSamuelPAraujo/Terminal-Commands-Cockpit#readme"
+}
