@@ -22,3 +22,8 @@
 - Extension host crashed on activation with `Cannot find module ./impl/format`.
   The bundler resolved `jsonc-parser` to its UMD entry, which does a runtime
   `require()` that cannot resolve once bundled. The build now prefers ESM entries.
+- Editing an argument, running a command, or clearing/resetting a value never updated the
+  visible row - it kept showing the old value (or "not set") until something forced a full
+  tree rebuild. Tree nodes carried no stable id, so a freshly-constructed node passed to the
+  refresh event could not be correlated with the row already on screen. Every node now gets a
+  stable id, which also keeps expand/collapse state and scroll position across refreshes.

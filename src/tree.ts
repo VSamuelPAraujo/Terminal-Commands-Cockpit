@@ -45,6 +45,32 @@ const KIND_ICONS: Record<ArgDef["kind"], string> = {
   multiPick: "checklist",
 };
 
+/**
+ * A stable id per node, so VS Code can correlate a freshly-constructed node
+ * (getChildren() builds a new object on every call - there is no reused
+ * reference) with the row it already has on screen. Without this, firing
+ * onDidChangeTreeData(node) with a structurally-equal-but-not-reference-equal
+ * node is silently a no-op: VS Code cannot tell it is the same row, so an
+ * edited value never appears until something forces a full-tree rebuild.
+ * It also keeps expand/collapse state and scroll position across refreshes.
+ */
+function nodeId(node: CockpitNode): string {
+  const folder = node.type === "folder" ? node.loaded.folder : node.folder;
+  const base = folder.uri.toString();
+  switch (node.type) {
+    case "folder":
+      return base;
+    case "group":
+      return `${base}::group:${node.label}`;
+    case "command":
+      return `${base}::cmd:${node.command.id}`;
+    case "arg":
+      return `${base}::cmd:${node.command.id}::arg:${node.arg.id}`;
+    case "problem":
+      return `${base}::problem:${node.message}`;
+  }
+}
+
 export class CockpitTreeProvider implements vscode.TreeDataProvider<CockpitNode> {
   private readonly emitter = new vscode.EventEmitter<CockpitNode | undefined>();
   readonly onDidChangeTreeData = this.emitter.event;
@@ -83,6 +109,13 @@ export class CockpitTreeProvider implements vscode.TreeDataProvider<CockpitNode>
   }
 
   getTreeItem(node: CockpitNode): vscode.TreeItem {
+    const item = this.buildTreeItem(node);
+    // Centralised so every branch below gets one - see nodeId() for why.
+    item.id = nodeId(node);
+    return item;
+  }
+
+  private buildTreeItem(node: CockpitNode): vscode.TreeItem {
     switch (node.type) {
       case "folder": {
         const item = new vscode.TreeItem(
