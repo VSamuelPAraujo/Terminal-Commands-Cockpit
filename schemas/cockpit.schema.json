@@ -103,7 +103,7 @@
           "examples": ["-TargetEnv", "--target", "--dry-run"]
         },
         "default": {
-          "description": "Value used until the user sets one.",
+          "description": "Value used until the user sets one. For `pick`/`multiPick` you can instead mark individual entries in \"options\" with their own \"default\": true, which is often easier to read than repeating the value here.",
           "type": ["string", "boolean", "array"],
           "items": { "type": "string" }
         },
@@ -135,7 +135,11 @@
                     "type": "string",
                     "description": "Passed on the command line. Defaults to the label."
                   },
-                  "description": { "type": "string", "description": "Secondary text." }
+                  "description": { "type": "string", "description": "Secondary text." },
+                  "default": {
+                    "type": "boolean",
+                    "description": "Pre-selects this option. For `pick`, mark at most one option. For `multiPick`, every marked option starts selected. Ignored if the arg itself also sets a \"default\"."
+                  }
                 },
                 "additionalProperties": false
               }

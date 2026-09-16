@@ -8,6 +8,12 @@ export interface PickOption {
   label: string;
   value?: string;
   description?: string;
+  /**
+   * Pre-selects this option instead of repeating its value in the arg's own
+   * "default". For "pick" only one option may be marked; for "multiPick" every
+   * marked option starts selected. Ignored if the arg also sets its own "default".
+   */
+  default?: boolean;
 }
 
 export interface ArgDef {

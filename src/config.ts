@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { parse as parseJsonc, type ParseError } from "jsonc-parser";
-import type { ArgDef, CockpitConfig, CommandDef, LoadedConfig } from "./types";
+import type { ArgDef, CockpitConfig, CommandDef, LoadedConfig, PickOption } from "./types";
 
 const VALID_KINDS = new Set<string>(["input", "pick", "shellPick", "flag", "multiPick"]);
 
@@ -69,6 +69,30 @@ function validateArg(
     errors.push(`${commandId}.${arg.id}: "shellPick" needs a "command" to produce its options.`);
     return undefined;
   }
+
+  // Per-option "default": true is sugar for the arg's own "default" - derive it
+  // here so every other consumer (tree row, prompt pre-fill, remembered-value
+  // fallback) only ever has to look at arg.default. An explicit arg-level
+  // default, if present, wins - it is more specific than a per-option mark.
+  if ((arg.kind === "pick" || arg.kind === "multiPick") && arg.default === undefined) {
+    const marked = (arg.options ?? []).filter(
+      (option): option is PickOption => typeof option !== "string" && option.default === true,
+    );
+    if (marked.length > 0) {
+      const values = marked.map((option) => option.value ?? option.label);
+      if (arg.kind === "multiPick") {
+        arg.default = values;
+      } else {
+        if (marked.length > 1) {
+          errors.push(
+            `${commandId}.${arg.id}: only one option can be marked "default" for "pick" - using "${values[0]}".`,
+          );
+        }
+        arg.default = values[0];
+      }
+    }
+  }
+
   return arg as ArgDef;
 }
 

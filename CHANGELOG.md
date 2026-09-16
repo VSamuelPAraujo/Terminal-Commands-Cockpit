@@ -14,6 +14,8 @@
   backing it up or sharing it outside the repo.
 - Import a config file, either merging its commands into the current config (skipping any
   id already in use) or replacing it outright.
+- `pick`/`multiPick` options can carry their own `"default": true` instead of repeating the
+  value in the arg's own `"default"`. `multiPick` may mark several; `pick` may mark one.
 
 ### Fixed
 
