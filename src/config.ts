@@ -72,7 +72,7 @@ function validateArg(
   return arg as ArgDef;
 }
 
-function validate(raw: unknown, errors: string[]): CockpitConfig {
+export function validate(raw: unknown, errors: string[]): CockpitConfig {
   if (typeof raw !== "object" || raw === null) {
     errors.push("The config root must be an object.");
     return { commands: [] };
@@ -126,6 +126,17 @@ function validate(raw: unknown, errors: string[]): CockpitConfig {
   return { version: root.version, commands };
 }
 
+/** Parses and validates a config file's raw text, independent of any workspace folder. */
+export function parseConfigText(text: string): { config: CockpitConfig; errors: string[] } {
+  const errors: string[] = [];
+  const parseErrors: ParseError[] = [];
+  const raw = parseJsonc(text, parseErrors, { allowTrailingComma: true });
+  if (parseErrors.length > 0) {
+    errors.push(`${parseErrors.length} syntax error(s) - the file is not valid JSON.`);
+  }
+  return { config: validate(raw, errors), errors };
+}
+
 export async function loadAll(): Promise<LoadedConfig[]> {
   const folders = vscode.workspace.workspaceFolders ?? [];
   const loaded: LoadedConfig[] = [];
@@ -135,13 +146,8 @@ export async function loadAll(): Promise<LoadedConfig[]> {
     if (!found) {
       continue;
     }
-    const errors: string[] = [];
-    const parseErrors: ParseError[] = [];
-    const raw = parseJsonc(found.text, parseErrors, { allowTrailingComma: true });
-    if (parseErrors.length > 0) {
-      errors.push(`${parseErrors.length} syntax error(s) - the file is not valid JSON.`);
-    }
-    loaded.push({ folder, configUri: found.uri, config: validate(raw, errors), errors });
+    const { config, errors } = parseConfigText(found.text);
+    loaded.push({ folder, configUri: found.uri, config, errors });
   }
 
   return loaded;

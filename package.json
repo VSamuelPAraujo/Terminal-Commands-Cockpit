@@ -59,6 +59,18 @@
         "icon": "$(add)"
       },
       {
+        "command": "cockpit.exportConfig",
+        "title": "Export Config...",
+        "category": "Cockpit",
+        "icon": "$(export)"
+      },
+      {
+        "command": "cockpit.importConfig",
+        "title": "Import Config...",
+        "category": "Cockpit",
+        "icon": "$(cloud-download)"
+      },
+      {
         "command": "cockpit.run",
         "title": "Run Command",
         "category": "Cockpit",
@@ -122,6 +134,16 @@
           "command": "cockpit.openConfig",
           "when": "view == cockpit.commands",
           "group": "navigation@2"
+        },
+        {
+          "command": "cockpit.importConfig",
+          "when": "view == cockpit.commands",
+          "group": "1_configFile@1"
+        },
+        {
+          "command": "cockpit.exportConfig",
+          "when": "view == cockpit.commands",
+          "group": "1_configFile@2"
         }
       ],
       "view/item/context": [

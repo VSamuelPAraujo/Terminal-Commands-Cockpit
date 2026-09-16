@@ -39,6 +39,11 @@ forget `--dry-run`, and find out afterwards. Cockpit turns that line into a form
 
 Cockpit writes the config for you. There is no JSON to learn before you get value out of it.
 
+Already have a config from another project? Use **Import Config** from the "..." menu at the top
+of the sidebar - it merges the imported commands in (skipping any id you already have) or replaces
+the config outright, your choice. **Export Config** does the reverse: saves a folder's config,
+comments and formatting intact, to a file you can hand to a teammate or another project.
+
 <!-- TODO: add a screen recording of the Add Command flow before publishing -->
 
 ## Configuration

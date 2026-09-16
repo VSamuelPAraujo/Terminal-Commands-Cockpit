@@ -10,6 +10,10 @@
 - Arguments are quoted by VS Code for the active shell, so values with spaces survive PowerShell, cmd, bash and zsh.
 - JSON Schema with autocomplete and inline documentation for the config file.
 - Copy the assembled command line to the clipboard.
+- Export a folder's config to a file you choose - comments and formatting intact - for
+  backing it up or sharing it outside the repo.
+- Import a config file, either merging its commands into the current config (skipping any
+  id already in use) or replacing it outright.
 
 ### Fixed
 

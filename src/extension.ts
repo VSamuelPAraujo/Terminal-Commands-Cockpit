@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { CANCELLED, initialValue, promptArg } from "./args";
 import { addCommandFlow } from "./authoring";
 import { DEFAULT_CONFIG_TEMPLATE, configFileSetting, configUriFor } from "./config";
+import { exportConfigFlow, importConfigFlow } from "./importExport";
 import { build, run } from "./runner";
 import { ValueStore } from "./state";
 import { CockpitTreeProvider, type ArgNode, type CommandNode } from "./tree";
@@ -28,6 +29,10 @@ export function activate(context: vscode.ExtensionContext): void {
     }
     return values;
   };
+
+  /** The folder's config file, whether or not it has been created yet. */
+  const configUriForFolder = (folder: vscode.WorkspaceFolder): vscode.Uri =>
+    provider.configs.find((entry) => entry.folder === folder)?.configUri ?? configUriFor(folder);
 
   const shouldRemember = (remember: boolean | undefined): boolean =>
     remember ?? vscode.workspace.getConfiguration("cockpit").get<boolean>("rememberArguments", true);
@@ -130,16 +135,45 @@ export function activate(context: vscode.ExtensionContext): void {
       if (!folder) {
         return;
       }
-      const uri = provider.configs.find((entry) => entry.folder === folder)?.configUri
-        ?? configUriFor(folder);
       try {
-        if (await addCommandFlow(folder, uri)) {
+        if (await addCommandFlow(folder, configUriForFolder(folder))) {
           await provider.refresh();
           vscode.window.showInformationMessage("Cockpit: command added.");
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         vscode.window.showErrorMessage(`Cockpit: could not add the command - ${message}`);
+      }
+    }),
+
+    vscode.commands.registerCommand("cockpit.exportConfig", async () => {
+      const folder = await pickFolder();
+      if (!folder) {
+        return;
+      }
+      try {
+        if (await exportConfigFlow(folder, configUriForFolder(folder))) {
+          vscode.window.showInformationMessage("Cockpit: config exported.");
+        }
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(`Cockpit: could not export the config - ${message}`);
+      }
+    }),
+
+    vscode.commands.registerCommand("cockpit.importConfig", async () => {
+      const folder = await pickFolder();
+      if (!folder) {
+        return;
+      }
+      try {
+        if (await importConfigFlow(folder, configUriForFolder(folder))) {
+          await provider.refresh();
+          vscode.window.showInformationMessage("Cockpit: config imported.");
+        }
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(`Cockpit: could not import the config - ${message}`);
       }
     }),
 
