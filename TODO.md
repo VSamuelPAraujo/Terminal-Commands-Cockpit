@@ -41,7 +41,9 @@ project — module names, branch models and internal script names all count.
 
 ## Known gaps
 
-- [ ] No automated tests. The riskiest logic is `parseCommandLine` in `src/authoring.ts`
+- [x] A smoke test (`bun run smoke`) loads the built bundle behind a stubbed `vscode`
+      and calls `activate()`. It runs as part of `vscode:prepublish`.
+- [ ] No unit tests yet. The riskiest logic is `parseCommandLine` in `src/authoring.ts`
       and `tokenize` in `src/runner.ts` — both are pure functions and easy to cover.
 - [ ] `shellPick` options are fetched every time the dropdown opens; no caching.
 - [ ] No way to edit or delete an existing command from the sidebar — you edit the

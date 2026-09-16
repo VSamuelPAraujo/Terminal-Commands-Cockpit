@@ -11,6 +11,10 @@ const options = {
   format: "cjs",
   platform: "node",
   target: "node20",
+  // Prefer each dependency ESM entry. jsonc-parser UMD build does a runtime
+  // require("./impl/format") that cannot resolve once bundled, which crashes the
+  // extension host on activation; the ESM build bundles statically instead.
+  mainFields: ["module", "main"],
   sourcemap: !minify,
   minify,
   logLevel: "info",

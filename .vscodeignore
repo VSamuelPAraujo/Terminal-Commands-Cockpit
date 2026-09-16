@@ -10,3 +10,4 @@ dist/**/*.map
 media/icon.svg
 examples/**
 *.vsix
+test/**

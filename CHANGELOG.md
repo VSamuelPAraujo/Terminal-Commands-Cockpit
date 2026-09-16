@@ -10,3 +10,9 @@
 - Arguments are quoted by VS Code for the active shell, so values with spaces survive PowerShell, cmd, bash and zsh.
 - JSON Schema with autocomplete and inline documentation for the config file.
 - Copy the assembled command line to the clipboard.
+
+### Fixed
+
+- Extension host crashed on activation with `Cannot find module ./impl/format`.
+  The bundler resolved `jsonc-parser` to its UMD entry, which does a runtime
+  `require()` that cannot resolve once bundled. The build now prefers ESM entries.
