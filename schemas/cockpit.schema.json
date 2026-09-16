@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Terminal Commands Cockpit configuration",
+  "title": "Terminal Cockpit configuration",
   "type": "object",
   "required": ["commands"],
   "properties": {

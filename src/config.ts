@@ -184,7 +184,7 @@ export function serializeConfig(config: CockpitConfig): string {
 
 export const DEFAULT_CONFIG_TEMPLATE = [
   "{",
-  "  // Terminal Commands Cockpit - every command below appears in the sidebar.",
+  "  // Terminal Cockpit - every command below appears in the sidebar.",
   "  // Hover any property for docs; autocomplete is available via the bundled schema.",
   '  "version": 1,',
   '  "commands": [',

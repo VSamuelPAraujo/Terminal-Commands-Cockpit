@@ -1,14 +1,14 @@
 <div align="center">
 
-<img src="media/icon.png" width="88" height="88" alt="Terminal Commands Cockpit icon" />
+<img src="media/icon.png" width="88" height="88" alt="Terminal Cockpit icon" />
 
-# Terminal Commands Cockpit
+# Terminal Cockpit
 
 **Save and run your favourite terminal commands from the sidebar — with their arguments.**
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/SamuelAraujo.terminal-commands-cockpit?color=5FE39B&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=SamuelAraujo.terminal-commands-cockpit)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/SamuelAraujo.terminal-commands-cockpit?color=5FE39B)](https://marketplace.visualstudio.com/items?itemName=SamuelAraujo.terminal-commands-cockpit)
-[![Open VSX](https://img.shields.io/open-vsx/v/SamuelAraujo/terminal-commands-cockpit?color=5FE39B&label=Open%20VSX)](https://open-vsx.org/extension/SamuelAraujo/terminal-commands-cockpit)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/SamuelAraujo.terminal-cockpit?color=5FE39B&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=SamuelAraujo.terminal-cockpit)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/SamuelAraujo.terminal-cockpit?color=5FE39B)](https://marketplace.visualstudio.com/items?itemName=SamuelAraujo.terminal-cockpit)
+[![Open VSX](https://img.shields.io/open-vsx/v/SamuelAraujo/terminal-cockpit?color=5FE39B&label=Open%20VSX)](https://open-vsx.org/extension/SamuelAraujo/terminal-cockpit)
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-5FE39B)](LICENSE)
 
 </div>

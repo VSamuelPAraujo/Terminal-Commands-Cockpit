@@ -1,6 +1,6 @@
 {
-  "name": "terminal-commands-cockpit",
-  "displayName": "Terminal Commands Cockpit",
+  "name": "terminal-cockpit",
+  "displayName": "Terminal Cockpit",
   "description": "Run your project's commands from the sidebar with real arguments: text inputs, dropdowns, dropdowns populated by a shell command, checkboxes and multi-select.",
   "version": "0.0.1",
   "publisher": "SamuelAraujo",
@@ -31,7 +31,7 @@
       "activitybar": [
         {
           "id": "cockpit",
-          "title": "Commands Cockpit",
+          "title": "Terminal Cockpit",
           "icon": "media/cockpit.svg"
         }
       ]
@@ -203,7 +203,7 @@
       }
     ],
     "configuration": {
-      "title": "Terminal Commands Cockpit",
+      "title": "Terminal Cockpit",
       "properties": {
         "cockpit.configFile": {
           "type": "string",

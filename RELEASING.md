@@ -43,7 +43,7 @@ speculatively. When the time comes, `package.json`'s `"version"` follows semver
 bun run check
 bun run build -- --minify
 bun run smoke
-bun run package     # vsce package - produces terminal-commands-cockpit-<version>.vsix
+bun run package     # vsce package - produces terminal-cockpit-<version>.vsix
 ```
 
 The `.vsix` lands in the project root. `.vscodeignore` controls what's actually inside it —
@@ -53,8 +53,8 @@ source, tests, examples and internal docs (like this file and `TODO.md`) are exc
 ## 5. Test the built .vsix locally before publishing anything
 
 ```bash
-code --uninstall-extension SamuelAraujo.terminal-commands-cockpit
-code --install-extension terminal-commands-cockpit-<version>.vsix --force
+code --uninstall-extension SamuelAraujo.terminal-cockpit
+code --install-extension terminal-cockpit-<version>.vsix --force
 ```
 
 Reload the window and actually click through the sidebar. `bun run smoke` only proves the

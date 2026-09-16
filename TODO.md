@@ -5,7 +5,7 @@ Everything outstanding before the first public release. Ticked items are done.
 ## Before publishing
 
 - [ ] **Verify the UI actually runs.** Nothing below matters until this is done.
-      - `code --install-extension terminal-commands-cockpit-0.0.1.vsix`, or <kbd>F5</kbd> for a dev host
+      - `code --install-extension terminal-cockpit-0.0.1.vsix`, or <kbd>F5</kbd> for a dev host
       - Check: the activity-bar icon appears, commands expand into argument rows,
         editing a value updates the row, ▶ runs in a terminal with the right quoting
       - Check the `shellPick` dropdown really lists git branches on Windows
