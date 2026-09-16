@@ -115,11 +115,12 @@ function previewToken(token: vscode.ShellQuotedString): string {
   return token.value;
 }
 
+/** Resolves true only if the task was actually launched, false if the user backed out at confirmation. */
 export async function run(
   command: CommandDef,
   values: Record<string, ArgValue>,
   folder: vscode.WorkspaceFolder,
-): Promise<void> {
+): Promise<boolean> {
   const built = build(command, values);
 
   const settings = vscode.workspace.getConfiguration("cockpit");
@@ -130,7 +131,7 @@ export async function run(
       "Run",
     );
     if (choice !== "Run") {
-      return;
+      return false;
     }
   }
 
@@ -158,4 +159,5 @@ export async function run(
   };
 
   await vscode.tasks.executeTask(task);
+  return true;
 }

@@ -16,6 +16,11 @@
   id already in use) or replacing it outright.
 - `pick`/`multiPick` options can carry their own `"default": true` instead of repeating the
   value in the arg's own `"default"`. `multiPick` may mark several; `pick` may mark one.
+- A command can set `"resetAfterRun": true` to clear every remembered value once it has
+  actually launched (not if you back out at the confirmation prompt). An argument with its
+  own `"default"` reverts to showing that default rather than "not set" - only the
+  remembered override is cleared. Meant for one-off values, like a branch name being
+  created or promoted, where silently reusing last run's value is the risky failure mode.
 
 ### Fixed
 

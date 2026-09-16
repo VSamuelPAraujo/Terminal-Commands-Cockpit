@@ -83,7 +83,11 @@ export function activate(context: vscode.ExtensionContext): void {
 
       provider.redraw();
       try {
-        await run(node.command, values, node.folder);
+        const launched = await run(node.command, values, node.folder);
+        if (launched && node.command.resetAfterRun) {
+          await store.reset(key, node.command.id);
+          provider.redraw();
+        }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         vscode.window.showErrorMessage(`Cockpit: ${message}`);

@@ -61,6 +61,11 @@
           "description": "Always show the assembled command line for confirmation before running.",
           "default": false
         },
+        "resetAfterRun": {
+          "type": "boolean",
+          "description": "Clear every remembered value for this command once it has been launched. An argument with its own \"default\" reverts to that default rather than \"not set\" - only the remembered override is cleared. Good for one-off values like a branch name, where reusing last run's value by accident is risky.",
+          "default": false
+        },
         "args": {
           "type": "array",
           "description": "Arguments the user can set from the sidebar.",

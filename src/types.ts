@@ -54,6 +54,16 @@ export interface CommandDef {
   env?: Record<string, string>;
   /** Always confirm before running, regardless of the global setting. */
   confirm?: boolean;
+  /**
+   * Clear every remembered value for this command's arguments once it has
+   * been launched. An argument with its own "default" (or a per-option
+   * "default": true) reverts to showing that default rather than "not set" -
+   * only the remembered override is cleared. Off by default: most commands
+   * benefit from remembering the last run, but one-off values like a branch
+   * name being created or promoted are actively risky to leave lying around
+   * for the next run to silently reuse.
+   */
+  resetAfterRun?: boolean;
 }
 
 export interface CockpitConfig {
