@@ -4,7 +4,7 @@
   "description": "Run your project's commands from the sidebar with real arguments: text inputs, dropdowns, dropdowns populated by a shell command, checkboxes and multi-select.",
   "version": "0.0.1",
   "publisher": "SamuelAraujo",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
